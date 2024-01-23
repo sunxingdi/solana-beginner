@@ -188,6 +188,43 @@ Commitment: confirmed
 Program Id: ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S
 ```
 
+5. 升级程序
+
+solana部署的程序，如果`Upgradeable` 字段为Yes，则可以由所有者升级。
+
+官方的helloworld演示项目不支持创建PDA账户，下面将程序升级为支持创建PDA账户的程序。
+
+```
+第1步：修改程序代码。
+
+第2步：重新编译代码。
+cargo build-bpf
+
+第3步：在区块浏览器确认原程序是否可升级。
+solana program show <PROGRAM_ID>
+
+> solana program show ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S
+
+Program Id: ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S
+Owner: BPFLoaderUpgradeab1e11111111111111111111111
+ProgramData Address: HFkZ51imH5YFEYAoJs9efdD8AG8qsPHka4FSErBXg7Nm
+Authority: G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e
+Last Deployed In Slot: 248291597
+Data Length: 91232 (0x16460) bytes
+Balance: 0.6361788 SOL
+
+第4步：升级程序。
+solana program deploy --program-id <UPGRADEABLE_PROGRAM_ID> /path/to/your_program.so
+
+> solana program deploy --program-id ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S ./target/deploy/helloworldpda.so
+Program Id: ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S
+```
+
+升级成功后，程序账户地址不变。在区块浏览器可以查看，新增了一条升级交易记录。
+https://solscan.io/account/ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S?cluster=testnet
+![image](./docs/image/区块浏览器-程序升级交易记录.png)
+
+
 ![image](./docs/image/链上程序开发工作流.png)
 
 ### 附录参考

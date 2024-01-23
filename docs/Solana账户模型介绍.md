@@ -74,17 +74,14 @@ Solana账户数据结构：
 
 在区块浏览器上查看账户属性: 
 
-- `Executable` 字段值为NO。钱包账户可以理解为一个特殊的数据账户，主要用于管理资金和签名交易。
+- `Executable` 字段值为NO。钱包账户是数据账户的一种，主要用于管理资金和签名交易。
 - `Owner` 字段值为System Program。
 
-```
 https://explorer.solana.com/address/G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e?cluster=testnet
-```
-![image](./../docs/image/区块浏览器1-数据账户.png)
-```  
+![image](./../docs/image/区块浏览器1-钱包账户.png)
+
 https://solscan.io/account/G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e?cluster=testnet
-```
-![image](./../docs/image/区块浏览器2-数据账户.png)
+![image](./../docs/image/区块浏览器2-钱包账户.png)
 
 ### 程序账户 
 
@@ -96,13 +93,10 @@ https://solscan.io/account/G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e?cluster=
 - `Owner` 字段值为BPF Upgradeable Loader。
 - `Upgradeable` 字段为Yes，升级权限所有者是部署程序的账户。
 
-```
 https://explorer.solana.com/address/ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S?cluster=testnet
-```
 ![image](./../docs/image/区块浏览器1-程序账户.png)
-```
+
 https://solscan.io/account/ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S?cluster=testnet
-```
 ![image](./../docs/image/区块浏览器2-程序账户.png)
 
 ### 程序可执行数据账户
@@ -119,16 +113,61 @@ https://solscan.io/account/ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S?cluster=t
 - `Owner` 字段值为BPF Upgradeable Loader。
 - `Upgradeable` 字段为Yes，升级权限所有者是部署程序的账户。
 
-```
 https://explorer.solana.com/address/HFkZ51imH5YFEYAoJs9efdD8AG8qsPHka4FSErBXg7Nm?cluster=testnet
-```
 ![image](./../docs/image/区块浏览器1-程序可执行数据账户.png)
-```
+
 https://solscan.io/account/HFkZ51imH5YFEYAoJs9efdD8AG8qsPHka4FSErBXg7Nm?cluster=testnet
-```
 ![image](./../docs/image/区块浏览器2-程序可执行数据账户.png)
 
+### 数据账户
 
-TODO:
+常见的数据账户有两种：用户创建的数据账户 和 程序创建的数据账户（PDA）。
+
+#### 用户创建的数据账户
+
+- 用户钱包数据账户
+  
+  前面介绍的，使用`solana-keygen new`创建的钱包账户，属于用户创建的数据账户，用来管理资金和签名交易。
+
+- 程序状态数据账户
+  
+  用户与程序进行交互的时候，需要创建一个数据账户来存储状态数据或用户数据。这类数据账户通常在程序部署时或程序交互时创建。账户的所有权通常设置为对应的程序账户地址，这样只有该程序才能写入或修改数据。
+
+  下面演示如何创建一个程序状态数据账户，对应的程序账户，是前面部署的官方演示HelloWorld程序。
+
+  ```shell
+  > ts-node script/create_data_account.ts
+
+    数据账户:  PublicKey [PublicKey(APKsrUcjm8BGJUZ24dC3whuoVy18A45mUixSWCaWHb5o)] {
+    _bn: <BN: 8b714dde7b604535000d4a513a15fdb707928046685a058ebccee52f3e35c70e>
+    }
+    钱包账户:  PublicKey [PublicKey(G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e)] {
+    _bn: <BN: e0c0036fff73beb0b3b41a12e80ada1bdddca947153e60b0a96ebfaea4df2399>
+    }
+
+    Transaction successful with signature: 4pFgtctDhbNeYDDzb1a5DF3JtTstZ4DxRNsbyjKtf2y4JchHSCc2cj7Dfd4NiMwc5uq8edvzqGRy4XkWm3Kr7CWe
+  ```
+
+  构造的交易中，包含3个账户信息。
+  - 钱包账户：G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e
+  - 程序账户：ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S
+  - 数据账户：APKsrUcjm8BGJUZ24dC3whuoVy18A45mUixSWCaWHb5o
+
+  交易完成后，可在区块浏览器查看数据账户属性。
+
+  - `Executable` 字段值为No，这个账户用于存储程序状态，账户不可执行。
+  - `Allocated Data Size` 字段值为512 bytes，这是交易中设置的存储空间。
+  - `Owner` 字段值为程序账户：ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S。
+
+  https://explorer.solana.com/address/APKsrUcjm8BGJUZ24dC3whuoVy18A45mUixSWCaWHb5o?cluster=testnet
+  ![image](./../docs/image/区块浏览器1-程序状态数据账户.png)
+
+  https://solscan.io/account/APKsrUcjm8BGJUZ24dC3whuoVy18A45mUixSWCaWHb5o?cluster=testnet
+  ![image](./../docs/image/区块浏览器2-程序状态数据账户.png)
+
+#### 程序创建的数据账户（PDA）
+
+在某些场景下，程序可能会为用户创建一个或多个程序派生账户（PDA）。PDA账户是由程序根据特定的种子信息和程序公钥派生出的地址，不需要私钥。PDA账户可代表程序持有代币。
+
 程序部署流程。
 程序升级流程。（程序账户和程序可执行数据账户如何变化）
