@@ -100,7 +100,7 @@ Keypair Path: /root/.config/solana/id.json
 Commitment: confirmed
 ```
 
-🔸4. 创建账户
+🔸4. 创建钱包账户
 
 可以设置一个 BIP39 规范的密码，此密码用来增强助记词的安全性，也可以为空。
 ```shell
