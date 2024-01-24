@@ -148,8 +148,13 @@ Commitment: confirmed
 
 链上程序部署成功返回 Program Id，类似以太坊智能合约地址。
 ```shell
+//部署官方helloworld程序
 > solana program deploy target/deploy/helloworld.so
 Program Id: ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S
+
+//部署PDA程序
+> solana program deploy ./target/deploy/createpda.so
+Program Id: 5yEnUH7yLzaeHmzBdYMFyBzfD1xvYfY4XHYdsUkDWbxS
 ```
 
 5. 升级程序
@@ -179,14 +184,60 @@ Balance: 0.6361788 SOL
 
 第4步：升级程序。
 solana program deploy --program-id <UPGRADEABLE_PROGRAM_ID> /path/to/your_program.so
+solana program deploy --program-id <YOUR_PROGRAM_ID> --keypair <UPGRADE_AUTHORITY_KEYPAIR> /path/to/your/new/contract.so
 
 > solana program deploy --program-id ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S ./target/deploy/helloworldpda.so
 Program Id: ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S
+
+❗❗❗注意：如果升级的程序比原先的程序大，则原先分配的程序账户空间不足以容纳新的程序代码，将升级失败。
 ```
 
 升级成功后，程序账户地址不变。在区块浏览器可以查看，新增了一条升级交易记录。
 https://solscan.io/account/ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S?cluster=testnet
 ![image](./docs/image/区块浏览器-程序升级交易记录.png)
+
+
+### Anchor框架
+
+1. 新建项目
+```
+anchor init your_project_name
+```
+
+2. 编译程序
+```
+anchor build
+```
+编译完成后需要修改declare_id，即程序账户地址。
+
+先读取程序账户地址：
+```shell
+> solana address -k target/deploy/your_project_name-keypair.json
+
+5yEnUH7yLzaeHmzBdYMFyBzfD1xvYfY4XHYdsUkDWbxS
+```
+
+修改rs文件中的declare_id：
+```
+declare_id!("5yEnUH7yLzaeHmzBdYMFyBzfD1xvYfY4XHYdsUkDWbxS");
+```
+
+执行`anchor build` 重新编译程序。
+
+3. 部署程序和升级程序。
+使用`solana program deploy` 命令部署或升级。
+
+``````
+``````
+``````
+``````
+``````
+``````
+``````
+``````
+``````
+``````
+``````
 
 
 ![image](./docs/image/链上程序开发工作流.png)
