@@ -15,58 +15,21 @@ Solana的核心特征包括：
 - 低交易费用：交易费用较低，进行小额交易变得更加经济实惠。
 
 - 高度可扩展性：由于其独特的共识机制和架构，可在不牺牲去中心化或安全性的前提下扩展网络容量。
-
+  
+---
 ### 账户模型
 
 [Solana账户模型介绍](./docs/Solana账户模型介绍.md)
 
-### 环境搭建（推荐Linux，Windows环境问题很多）
+---
+### 环境搭建
 
-🔸1. 安装rust
+[Solana开发环境搭建](./docs/Solana开发环境搭建.md)
 
-下载地址和安装方法见官方指导：https://www.rust-lang.org/zh-CN/tools/install
+---
+### 基本操作
 
-Linux安装方法：
-```shell
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
-
-安装完成后验证方法：
-```shell
-> rustc -V
-rustc 1.74.1 (a28077b28 2023-12-04)
-
-> cargo -V
-cargo 1.74.1 (ecb9851af 2023-10-18)
-```
-
-🔸2. 安装solana
-
-Linux安装方法：
-```shell
-执行安装命令：sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
-添加环境变量：/etc/profile 增加 PATH="/root/.local/share/solana/install/active_release/bin:$PATH"
-加载环境变量：source /etc/profile
-```
-
-Windows安装方法：
-```shell
-软件下载地址：https://github.com/solana-labs/solana/releases
-管理员运行CMD：solana-install-init-x86_64-pc-windows-msvc.exe v1.17.17
-```
-
-安装完成后验证方法：
-```shell
-> solana --version
-solana-cli 1.17.17 (src:27a43800; feat:1337574167, client:SolanaLabs)
-```
-
-Solana版本升级方法：
-```shell
-solana-install update
-```
-
-🔸3. 设置网络
+#### 设置网络
 
 Solana 的集群有本地集群（localhost）和公开集群。
 
@@ -100,7 +63,7 @@ Keypair Path: /root/.config/solana/id.json
 Commitment: confirmed
 ```
 
-🔸4. 创建钱包账户
+#### 创建钱包账户
 
 可以设置一个 BIP39 规范的密码，此密码用来增强助记词的安全性，也可以为空。
 ```shell
@@ -150,6 +113,7 @@ Signature: 2f5VW9eQoc1Nj1YbKKjFTKNSJmX6VJPNfqdLurxx5Lf13hKLYQJksCyshr8yi7RDjryLw
 1 SOL
 ```
 
+---
 ### 交互实践
 以官方HelloWorld演示项目为例。
 
