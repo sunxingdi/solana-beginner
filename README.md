@@ -92,7 +92,6 @@ Wrote new keypair to /root/.config/solana/id.json
 pubkey: G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e
 =================================================================================
 Save this seed phrase and your BIP39 passphrase to recover your new keypair:
-popular mimic addict alcohol dawn enrich author base useless hollow brush balcony
 =================================================================================
 ```
 
