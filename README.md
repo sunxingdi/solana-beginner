@@ -53,6 +53,15 @@ solana config set --url https://api.testnet.solana.com
 //主网
 solana config set --url https://api.mainnet-beta.solana.com
 
+//设置开发网 (Solana训练营使用开发网)
+> solana config set --url https://api.devnet.solana.com
+
+Config File: /root/.config/solana/cli/config.yml
+RPC URL: https://api.devnet.solana.com
+WebSocket URL: wss://api.devnet.solana.com/ (computed)
+Keypair Path: /root/.config/solana/id.json
+Commitment: confirmed
+
 //设置测试网
 > solana config set --url https://api.testnet.solana.com
 
@@ -65,7 +74,7 @@ Commitment: confirmed
 
 #### 创建钱包账户
 
-可以设置一个 BIP39 规范的密码，此密码用来增强助记词的安全性，也可以为空。
+创建钱包账户，可以设置一个 BIP39 规范的密码，此密码用来增强助记词的安全性，也可以为空。
 ```shell
 > solana-keygen new
 
@@ -85,6 +94,17 @@ pubkey: G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e
 Save this seed phrase and your BIP39 passphrase to recover your new keypair:
 popular mimic addict alcohol dawn enrich author base useless hollow brush balcony
 =================================================================================
+```
+
+导入钱包账户，私钥文件路径：/root/.config/solana/id.json
+```
+> solana config set --keypair /root/.config/solana/id.json
+
+Config File: /root/.config/solana/cli/config.yml
+RPC URL: https://api.devnet.solana.com
+WebSocket URL: wss://api.devnet.solana.com/ (computed)
+Keypair Path: /root/.config/solana/id.json
+Commitment: confirmed
 ```
 
 查看账户公钥。
@@ -135,13 +155,8 @@ git clone https://github.com/solana-labs/example-helloworld.git
 
 3. 设置网络
 ```shell
-> solana config set --url https://api.testnet.solana.com
+> solana config set --url https://api.devnet.solana.com
 
-Config File: /root/.config/solana/cli/config.yml
-RPC URL: https://api.testnet.solana.com
-WebSocket URL: wss://api.testnet.solana.com/ (computed)
-Keypair Path: /root/.config/solana/id.json
-Commitment: confirmed
 ```
 
 4. 部署程序

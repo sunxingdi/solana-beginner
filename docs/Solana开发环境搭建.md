@@ -1,6 +1,7 @@
 # Solana开发环境搭建
 
 （推荐Linux，Windows环境问题很多）
+（需要梯子）
 
 整体安装指导：https://www.anchor-lang.com/docs/installation
 
@@ -24,10 +25,11 @@ cargo 1.74.1 (ecb9851af 2023-10-18)
 ---
 ### 安装Solana CLI
 
-Linux安装方法：
+Linux安装方法：(推荐)
 ```shell
 执行安装命令：sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
-添加环境变量：/etc/profile 增加 PATH="/root/.local/share/solana/install/active_release/bin:$PATH"
+添加环境变量：vi /etc/profile 
+末尾增加一行：PATH="/root/.local/share/solana/install/active_release/bin:$PATH"
 加载环境变量：source /etc/profile
 ```
 
@@ -52,14 +54,21 @@ solana-install update
 ### 安装nodejs和npm
 ```
 //Linux安装命令，可能版本不是最新的
-sudo apt-get install nodejs
-sudo apt-get install npm
+//sudo apt-get install nodejs
+//sudo apt-get install npm
 
 //Linux安装指定版本nodejs
+//nvm: node版本管理器
+//安装nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-//重启shell
-command -v nvm
-nvm install 20.11.0
+//重启shell，查看nvm版本
+nvm -v
+//安装nodejs版本
+nvm install 20.11.1
+nvm install latest
+
+//nodejs官网下载地址，可以到这里查看nodejs最新版本
+https://nodejs.org/en/download
 ```
 
 安装完成后验证方法：
@@ -70,15 +79,15 @@ node -v
 npm -v
 ```
 
-配置npm
+配置npm（Linux默认不需要配置）
 ```
 //查看node全局模块路径和缓存路径
 npm config get cache 
 npm config get prefix 
 
-//配置node全局模块路径和缓存路径
-npm config set cache "D:\nodejs\cache"
-npm config set prefix "D:\nodejs\npm"
+//配置node全局模块路径和缓存路径(示例中是Linux默认路径)
+npm config set cache  "/root/.npm"
+npm config set prefix "/root/.nvm/versions/node/v20.11.1"
 
 //查看node源
 npm config get registry
@@ -108,4 +117,16 @@ avm use latest
 安装完成后验证方法：
 ```
 anchor --version
+```
+
+### 安装Solana JS包
+```
+//安装Web3.js
+npm install --save @solana/web3.js
+
+//安装SPL代币（SPL-Token）
+npm install --save @solana/spl-token
+
+//钱包适配器（Wallet-Adapter）
+npm install --save @solana/wallet-adapter-wallets @solana/wallet-adapter-base
 ```
