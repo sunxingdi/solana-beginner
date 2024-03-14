@@ -1,5 +1,6 @@
 # Rust基础知识介绍.md
 
+---
 ### HelloWorld演示
 
 ```
@@ -13,6 +14,7 @@ cargo build（编译普通的Rust工程）
 ./target/debug/helloworld
 ```
 
+---
 ### Rust基本语法
 
 #### ⭐基本数据类型
@@ -516,11 +518,107 @@ enum Result<T, E> {
     Err(E),
 }
 ```
-
-#### ⭐
+---
+### Cargo管理工程
+常用命令
 ```rust
+创建工程：
+cargo new project_name
+
+添加依赖：
+cargo add [options] crate…             //直接跟库名，会去cargo.io上索引，找到最新的版本
+cargo add [options] --path path        //指定库在本地的路径，可以对本地目录进行依赖
+cargo add [options] --git url [crate…] //指定的git仓库的路径，比如是私有的git仓库
+
+移除依赖：
+cargo remove
+
+构建：
+cargo build [options]
+--workspace： 构建整个workspace里面的目标
+--lib： 构建库目标
+--bin name…： 只构建指定的可执行文件
+--example name…： 只构建指定的example
+--test name…： 构建指定的test
+--release: 采用relase构建
+
+执行：
+cargo run [options] [-- args]
+--bin name…： 只执行指定的可执行文件
+--example name…： 只执行指定的example
+
+cargo run --bin helloworld 等同于 ./target/debug/helloworld
+
+清除构建结果：
+cargo clean [options]
 ```
 
-#### ⭐
-```rust
+Cargo.toml结构
+```toml
+[cargo-features] — 不稳定的、只在夜间版中可用的特性。
+[[package]] — 定义一个包。
+    [name] — 包的名称。
+    [version] — 包的版本。
+    [authors] — 包的作者。
+    [edition] — Rust的版本（2015, 2018等）。
+    [rust-version] — 最低支持的Rust版本。
+    [description] — 包的描述。
+    [documentation] — 包文档的URL。
+    [readme] — 包README文件的路径。
+    [homepage] — 包主页的URL。
+    [repository] — 包源代码仓库的URL。
+    [license] — 包的许可证。
+    [license-file] — 许可证文本的路径。
+    [keywords] — 包的关键词。
+    [categories] — 包的分类。
+    [workspace] — 包的工作空间路径。
+    [build] — 包构建脚本的路径。
+    [links] — 包链接的原生库名称。
+    [exclude] — 发布时要排除的文件。
+    [include] — 发布时要包含的文件。
+    [publish] — 可用于阻止发布包。
+    [metadata] — 外部工具的额外设置。
+    [default-run] — 使用cargo run时默认运行的二进制文件。
+    [autobins] — 禁用自动发现二进制文件。
+    [autoexamples] — 禁用自动发现示例文件。
+    [autotests] — 禁用自动发现测试文件。
+    [autobenches] — 禁用自动发现基准测试文件。
+    [resolver] — 设置使用的依赖解析器。
+
+Target tables：
+    [[lib]] — 库目标设置。
+    [[[bin]]] — 二进制目标设置。
+    [[[example]]] — 示例目标设置。
+    [[[test]]] — 测试目标设置。
+    [[[bench]]] — 基准测试目标设置。
+
+Dependency tables：
+    [[dependencies]] — 包的库依赖。
+    [[dev-dependencies]] — 示例、测试和基准测试的依赖。
+    [[build-dependencies]] — 构建脚本的依赖。
+    [[target]] — 平台特定的依赖。
+    [[badges]] — 在注册表上显示的徽章。
+    [[features]] — 条件编译特性。
+    [[patch]] — 覆盖依赖项。
+    [[replace]] — 覆盖依赖项。
+    [[profile]] — 编译器设置和优化。
+    [[workspace]] — 工作空间定义。
 ```
+
+---
+### Rust的陷阱与缺陷（Rustaceans）
+#### ⭐内存管理
+
+#### ⭐所有权和借用
+
+#### ⭐智能指针
+```
+Box<T> 在堆上分配空间
+Rc<T> 引用计数，可以使得一个对象有多个 owner
+Ref<T> and RefMut<T>, RefCell<T> 强制要求在运行时检查借用关系，而不是编译期间，就有点动态检查的意思
+```
+#### ⭐生命周期
+#### ⭐错误处理
+#### ⭐测试代码
+- 单元测试
+- 集成测试

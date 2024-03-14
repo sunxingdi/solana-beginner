@@ -69,3 +69,5 @@ Rust语言圣经：https://course.rs/basic/intro.html
 Rust语言实战：https://practice-zh.course.rs/why-exercise.html
 
 Rust在线运行：https://play.rust-lang.org/
+
+Cargo指导文档：https://doc.rust-lang.org/cargo/
