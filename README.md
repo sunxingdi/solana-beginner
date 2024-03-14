@@ -132,6 +132,100 @@ Signature: 2f5VW9eQoc1Nj1YbKKjFTKNSJmX6VJPNfqdLurxx5Lf13hKLYQJksCyshr8yi7RDjryLw
 1 SOL
 ```
 
+导入账号。
+```shell
+> solana config set --keypair /root/.config/solana/id.json
+```
+
+转账操作
+```shell
+> solana transfer --allow-unfunded-recipient 7MXF6kgheFCfr9PLcDdz8mksEphKmD3ff8KnnPYN5bJc 0.01
+
+Signature: 21gZzWGaG6VuKVsL62LsNMAn6EUN1VtwGUh4eTsW5F9wZrrUi9UQr8XzVWmbfa5PEkEhPRKL3xaNNrde6S1D1hyu
+```
+
+
+查询其他账号SOL余额
+```shell
+> solana balance 7MXF6kgheFCfr9PLcDdz8mksEphKmD3ff8KnnPYN5bJc
+
+0.01 SOL
+```
+
+#### 创建代币账户
+
+创建代币
+```shell
+> spl-token create-token
+
+Creating token FpbHQ2zoKvp59jLVdECVTMRM8eDsbUZttdiiinNQgn4C under program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+
+Address:  FpbHQ2zoKvp59jLVdECVTMRM8eDsbUZttdiiinNQgn4C
+Decimals:  9
+
+Signature: 27i8tRa5bXYA1Qh4uGY7scV8qDEqCkmM8ScLwRt9G5HYcc37KhKYBDh44qTEXEbyWxox13Dj37GEYGmJAsKbraiH
+```
+
+创建代币账户
+
+调用ATA合约，创建ATA账号
+```shell
+> spl-token create-account FpbHQ2zoKvp59jLVdECVTMRM8eDsbUZttdiiinNQgn4C
+
+Creating account BYc1k1svFWBN6WYKhpx7X3Euif9xzMQrEsSxHdCVyUg1
+
+Signature: 2bmvv1nmKPSVzvwXQKpe5eLLmbKMct9rwnpAWysSUhN3h4EsUpD855eihLNLe2JYNByWoFWiF3j5i5NW9gqNQokg
+```
+
+铸币操作
+
+给自己的ATA账户发送100个币。
+```shell
+> spl-token mint FpbHQ2zoKvp59jLVdECVTMRM8eDsbUZttdiiinNQgn4C 100 BYc1k1svFWBN6WYKhpx7X3Euif9xzMQrEsSxHdCVyUg1
+
+Minting 100 tokens
+  Token: FpbHQ2zoKvp59jLVdECVTMRM8eDsbUZttdiiinNQgn4C
+  Recipient: BYc1k1svFWBN6WYKhpx7X3Euif9xzMQrEsSxHdCVyUg1
+
+Signature: 3ti5niuoVB9ZPTh5ZCBywopeo4b67WisnMMgj59fnjEQDrMEcQYfU5pSSNYBHnjJvRrLe9JCH6tZu9pQDjZPjvAU
+```
+
+查询SPL-TOKEN余额
+```shell
+> spl-token balance FpbHQ2zoKvp59jLVdECVTMRM8eDsbUZttdiiinNQgn4C
+
+100
+```
+
+给其他账户发送SPL-TOKEN
+```shell
+> spl-token transfer --fund-recipient  FpbHQ2zoKvp59jLVdECVTMRM8eDsbUZttdiiinNQgn4C 1 7MXF6kgheFCfr9PLcDdz8mksEphKmD3ff8KnnPYN5bJc
+
+Transfer 1 tokens
+  Sender: BYc1k1svFWBN6WYKhpx7X3Euif9xzMQrEsSxHdCVyUg1
+  Recipient: 7MXF6kgheFCfr9PLcDdz8mksEphKmD3ff8KnnPYN5bJc
+  Recipient associated token account: J4x5154eQcPTpj7zVCZgAS2Lap8Q2DUFyDd8bxWK8fPz
+  Funding recipient: J4x5154eQcPTpj7zVCZgAS2Lap8Q2DUFyDd8bxWK8fPz
+
+Signature: 5XEHEN1BSJjbPbk1Hwk5pz42AnwWC48iDf98hkhCkP7B1oT7Je7x7eMzNgHV4WfWVhkuZubWfQ9wLSgEH4VSq2t3
+```
+
+查询其他账号的SPL-TOKEN余额
+```
+> spl-token balance --owner 7MXF6kgheFCfr9PLcDdz8mksEphKmD3ff8KnnPYN5bJc FpbHQ2zoKvp59jLVdECVTMRM8eDsbUZttdiiinNQgn4C
+```
+
+演示地址汇总
+```
+代币账户： FpbHQ2zoKvp59jLVdECVTMRM8eDsbUZttdiiinNQgn4C
+
+钱包账户1： G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e
+ATA账户1： BYc1k1svFWBN6WYKhpx7X3Euif9xzMQrEsSxHdCVyUg1
+
+钱包账户2： 7MXF6kgheFCfr9PLcDdz8mksEphKmD3ff8KnnPYN5bJc
+ATA账户2： J4x5154eQcPTpj7zVCZgAS2Lap8Q2DUFyDd8bxWK8fPz
+```
+
 ---
 ### 交互实践
 以官方HelloWorld演示项目为例。

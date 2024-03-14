@@ -83,7 +83,20 @@ Solana账户数据结构：
 
 > 说明：当一个公钥位于椭圆曲线上时，则存在一个对应的私钥，可以使私钥加密算法生效。反之则不存在私钥。
 
+---
+### 代币账户（Mint Account，SPL Token Account）
+Solana中，一个代币，仅仅是一个归Token合约管理的普通的Account对象。
 
+代币账户中，包含了代币的基本信息，如：supply总供应量、decimals代币精度。
+
+![alt text](./image/Mint%20Account.png)
+
+---
+### 用户代币账户（Associated Token Account, ATA）
+
+用户代币账户存放了每个用户拥有的代币数量信息。
+
+![alt text](./image/SPL%20Token%20Account.png)
 ---
 ### 账户案例演示
 
