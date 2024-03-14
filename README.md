@@ -31,6 +31,16 @@ Solana的核心特征包括：
 
 [Solana基本操作命令](./docs/Solana基本操作命令.md)
 
+---
+### 合约交互
+
+[Solana合约交互方法](./docs/Solana合约交互方法.md)
+
+---
+### Rust基础
+
+[Rust基础知识介绍](./docs/Rust基础知识介绍.md)
+
 ``````
 ``````
 ``````
@@ -51,3 +61,11 @@ Solana的核心特征包括：
 Solana区块浏览器：https://solscan.io/
 
 Solana区块浏览器：https://explorer.solana.com/
+
+Solana中文开发教程：https://www.solanazh.com/
+
+Rust语言圣经：https://course.rs/basic/intro.html
+
+Rust语言实战：https://practice-zh.course.rs/why-exercise.html
+
+Rust在线运行：https://play.rust-lang.org/
