@@ -12,17 +12,21 @@ Solana 的集群有本地集群（localhost）和公开集群。
 
 设置命令：
 ```shell
-//本地网络
+
+//查看网络
+solana config get
+
+//设置网络-本地网络
 solana config set --url localhost
 solana-test-validator
 
-//开发者网
+//设置网络-开发网
 solana config set --url https://api.devnet.solana.com
 
-//测试网
+//设置网络-测试网
 solana config set --url https://api.testnet.solana.com
 
-//主网
+//设置网络-主网
 solana config set --url https://api.mainnet-beta.solana.com
 
 //设置开发网 (Solana训练营使用开发网)

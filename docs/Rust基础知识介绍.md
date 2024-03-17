@@ -610,6 +610,18 @@ Dependency tables：
 #### ⭐内存管理
 
 #### ⭐所有权和借用
+```
+所有权三原则：
+1.Rust 中每一个值都被一个变量所拥有，该变量被称为值的所有者；
+2.一个值同时只能被一个变量所拥有，或者说一个值只能拥有一个所有者；
+3.当所有者(变量)离开作用域范围时，这个值将被 drop (丢弃)。
+
+
+&：不可变借用，通过引用来获得数据的访问权，而不是所有权
+&mut：可变借用，
+*：解引用，获取到借用的对象的值
+```
+
 
 #### ⭐智能指针
 ```
@@ -618,7 +630,72 @@ Rc<T> 引用计数，可以使得一个对象有多个 owner
 Ref<T> and RefMut<T>, RefCell<T> 强制要求在运行时检查借用关系，而不是编译期间，就有点动态检查的意思
 ```
 #### ⭐生命周期
+```
+':生命周期标注，'a 是默认使用的名称，位于引用的 & 之后
+```
+
 #### ⭐错误处理
+
+```
+
+let b = divide(a, a + num)?; 
+
+在Rust中，`?` 运算符用于简化错误处理。当你在一个返回`Result`类型的表达式后面使用`?`，它会自动处理这个`Result`。如果`Result`是`Ok`变体，它会从中取出`Ok`里面的值继续执行；如果是`Err`变体，则会将错误返回出去，从当前函数中早期退出。
+
+具体到你的代码 `let b = divide(a, a + num)?;` 中，假设`divide`函数返回的是`Result<T, E>`类型，那么如果`divide`成功执行并返回`Ok(T)`，`?`会提取出`T`赋值给变量`b`。如果`divide`返回`Err(E)`，`?`则会自动从当前函数返回`Err(E)`。
+
+使用`?`运算符要求你的函数返回类型必须是`Result`、`Option`或其他实现了`std::ops::Try`的类型。
+```
+
+#### ⭐宏
+- 声明式宏（Declarative Macros）
+  
+  允许开发者使用宏规则macro_rules!创建模式匹配和替换规则，根据匹配到的模式进行代码替换。
+
+- 过程宏（Procedural Macros）
+  - 派生宏（Derive Macros）
+  
+    语法： #[derive(CustomMacro)]
+
+    功能：为struct结构体、enum枚举、union类型实现Trait特征
+
+    案例：
+
+    solana 的 Anchor 框架中， #[derive(Accounts)]宏应用于指令所要求的账户列表，实现了给定 struct 结构体数据的反序列化，以及安全校验的功能。
+
+    ```
+    // 派生宏
+    #[derive(Accounts)]
+    pub struct InitializeAccounts<'info> {
+    // 结构体中的字段
+    }
+
+    ```
+
+  - 属性式宏和函数式宏
+
+    语法：#[attr]或#[attr(…)]、#[cfg(…)]、#[test]、#[allow(...)]、#[warn(...)]
+
+    功能：
+
+    案例：
+
+    Solana 中 anchor 框架用到的#[account(..)]属性式宏，它按照该宏配置的属性来初始化 PDA 账户，其中init、seeds、payer等属性作为宏定义中第一个 TokenStream 参数，而pub pda_counter: Account<'info, Counter>, 作为宏定义中第二个 TokenStream 参数。而对于结构体Counter，则使用#[account]进行标记，以便 anchor 框架自动实现结构体的反序列化。
+
+    ```
+    pub struct InitializeAccounts<'info> {
+
+	#[account(init, seeds = [b"my_seed", user.key.to_bytes().as_ref()], payer = user, space = 8 + 8)]
+	pub pda_counter: Account<'info, Counter>,
+	// ……
+    }
+
+    #[account]
+    struct Counter {
+        count: i32,
+    }
+    ```
+
 #### ⭐测试代码
 - 单元测试
 - 集成测试

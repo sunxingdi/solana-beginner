@@ -41,6 +41,12 @@ Solana的核心特征包括：
 
 [Rust基础知识介绍](./docs/Rust基础知识介绍.md)
 
+### 合约开发
+
+[Solana合约开发入门](./docs/Solana合约开发入门.md)
+
+[Anchor框架开发入门](./docs/Anchor框架开发入门.md)
+
 ``````
 ``````
 ``````
@@ -70,4 +76,14 @@ Rust语言实战：https://practice-zh.course.rs/why-exercise.html
 
 Rust在线运行：https://play.rust-lang.org/
 
+Rust指导文档：https://doc.rust-lang.org/book/title-page.html
+
 Cargo指导文档：https://doc.rust-lang.org/cargo/
+
+Playground：https://beta.solpg.io/
+
+anchor官网：https://www.anchor-lang.com/
+
+anchor框架：https://book.anchor-lang.com/
+
+指南：用Anchor构建Solana程序：https://mp.weixin.qq.com/s/sY2dqn4odQ54CyM-TOx4Yw
