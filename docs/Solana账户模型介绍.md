@@ -117,6 +117,8 @@ https://solscan.io/account/G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e?cluster=
 
 ### 程序账户 
 
+Program Account
+
 以刚部署的程序为例进行演示：`ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S`
 
 在区块浏览器上查看账户属性: 
@@ -132,6 +134,8 @@ https://solscan.io/account/ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S?cluster=t
 ![image](./../docs/image/区块浏览器2-程序账户.png)
 
 ### 程序可执行数据账户
+
+Program Executable Data Account
 
 区块浏览器中显示了另一个账户：`HFkZ51imH5YFEYAoJs9efdD8AG8qsPHka4FSErBXg7Nm` ，叫程序可执行数据账户。
 
