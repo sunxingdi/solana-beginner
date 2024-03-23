@@ -70,6 +70,8 @@ Solana区块浏览器：https://explorer.solana.com/
 
 Solana中文开发教程：https://www.solanazh.com/
 
+Solana官方文档：https://solana.com/zh/docs
+
 Rust语言圣经：https://course.rs/basic/intro.html
 
 Rust语言实战：https://practice-zh.course.rs/why-exercise.html
@@ -87,3 +89,5 @@ anchor官网：https://www.anchor-lang.com/
 anchor框架：https://book.anchor-lang.com/
 
 指南：用Anchor构建Solana程序：https://mp.weixin.qq.com/s/sY2dqn4odQ54CyM-TOx4Yw
+
+Rust中文文档: https://rustwiki.org/docs/

@@ -223,3 +223,220 @@ Running client...
 ```
 
 ### Anchor账户约束
+
+Accounts 结构中的属性。
+
+- mut 验证帐户是否可变
+```rust
+#[account(mut)] 
+pub mutable_account: Account<'info, MyData>,
+```
+
+- signer 验证签署交易的帐户
+```rust
+#[account(signer)] 
+pub signer_account: Account<'info, MyData>,
+```
+
+- init, payer, space 初始化一个新帐户
+
+    init必须与payer和space一起使用。
+
+    payer：对将为新帐户支付租金的另一个帐户的引用。
+
+    space：分配给新帐户的字节数。
+
+    注意：您必须将帐户中的系统程序作为 system_program 传递才能创建新帐户。
+```rust
+#[account(init, payer = bank, space = 200)]
+pub new_account: Account<'info, MyData>,
+#[account(mut)]
+pub bank: Signer<'info>,
+pub new_account: Account<'info, MyData>,
+system_program: Program<'info, System>,
+```
+
+- seeds, bump 验证账户是否是PDA账户
+```rust
+#[account(seeds = [b"example", user.key().as_ref()], bump)]
+pub user_ex_pda: Account<'info, MyData>,
+pub user: Signer<'info>,
+```
+
+- has_one 验证指定帐户的字段是否等于指定同名帐户的密钥。
+
+    在下方示例中，data.authority必须与authority.key()相同。
+```rust
+#[account(has_one = authority)]
+pub data: Account<'info, MyData>,
+pub authority: Signer<'info>,
+```
+
+- address 验证帐户密钥与传递的公钥匹配
+  
+    例如，如果您将权限限制为指定的 SOME_PUBKEY。
+```rust
+#[account(address = SOME_PUBKEY)]
+pub authority: Signer<'info>,
+```
+
+- owner 验证帐户所有者与传递的公钥匹配
+  
+    例如，该示例要求数据帐户由令牌计划拥有。
+```rust
+#[account(owner = token_program.key())]
+pub data: Account<'info, MyData>,
+pub token_program: Account<'info, Token>,
+```
+
+- executable 验证该帐户是一个程序
+```rust
+#[account(executable)]
+pub some_program: AccountInfo<'info>,
+```
+
+- rent_exempt 跳过或强制执行由其他约束（例如init）执行的租金豁免检查。
+```rust
+#[account(rent_exempt = skip)]
+pub skipped_account: Account<'info, MyData>,
+#[account(rent_exempt = enforce)]
+pub enforced_account: Account<'info, MyData>,
+```
+
+- zero 检查帐户标识符是否为零。
+  
+  这对于大于 10kb 的帐户是必要的。这必须通过两步过程完成：创建帐户，然后将其初始化为零。
+```rust
+#[account(zero)]
+pub zero_account: Account<'info, MyData>,
+```
+
+- close 在指令结束时将帐户标记为关闭并将其信号发送到指定帐户。
+```rust
+#[account(close = receiver)]
+pub closing: Account<'info, MyData>,
+pub receiver: SystemAccount<'info>,
+```
+
+- constraint 验证给定表达式的计算结果是否为 true。
+```rust
+#[account(constraint = acct_one.age == acct_two.info.age )]
+pub acct_one: Account<'info, MyData>,
+pub acct_two: Account<'info, OtherData>,
+```
+
+- realloc 更新分配给帐户的空间量（字节）
+  
+  与新空间相关的任何成本都将由realloc::payer支付。
+  
+  任何因减少空间而恢复的内存都将由realloc::payer接收。
+  
+  使用realloc::zero来确定新内存在重新分配后是否应进行零初始化。
+```rust
+#[account(mut,realloc = 100, realloc::payer = bank, realloc::zero = false)]
+pub update_acct: Account<'info, MyData>,
+#[account(mut)]
+pub bank: Signer<'info>,
+system_program: Program<'info, System>,
+```
+
+SPL Token 约束
+
+- token::mint
+- token::authority
+
+验证TokenAccount的铸币地址和权限
+
+如果使用init，则必须同时传递铸币地址和权限。如果只是检查帐户，您可以使用这两个选项之一。
+
+```rust
+#[account(
+   init,
+   payer = payer,
+   token::mint = mint,
+   token::authority = payer,
+)]
+pub new_ata: Account<'info, TokenAccount>,
+#[account(address = mint::USDC)]
+pub mint: Account<'info, Mint>,
+#[account(mut)]
+pub payer: Signer<'info>,
+pub token_program: Program<'info, Token>,
+pub system_program: Program<'info, System>
+```
+
+- mint::authority
+- mint::decimals
+- mint::freeze_authority
+
+使用给定的小数和权限创建或检查帐户
+
+如果使用init，则必须同时传递小数和权限。冻结权限是可选的。如果只是检查帐户，您可以使用这三个选项之一。
+```rust
+#[account(
+   init,
+   payer = payer,
+   mint::decimals = 9,
+   mint::authority = payer,
+   mint::freeze_authority = payer,
+)]
+pub new_ata: Account<'info, Mint>,
+#[account(mut)]
+pub payer: Signer<'info>,
+pub token_program: Program<'info, Token>,
+pub system_program: Program<'info, System>
+```
+
+- associated_token::mint
+- associated_token::authority
+
+验证铸币地址和关联代币账户的权限。
+
+如果使用init，则必须同时通过mint和authority。如果只是检查帐户，您可以使用这两个选项之一。
+```rust
+#[account(
+   init,
+   payer = payer,
+   associated_token::mint = mint,
+   associated_token::authority = payer,
+)]
+pub new_ata: Account<'info, TokenAccount>,
+#[account(address = mint::USDC)]
+pub mint: Account<'info, Mint>,
+#[account(mut)]
+pub payer: Signer<'info>,
+pub token_program: Program<'info, Token>,
+pub associated_token_program: Program<'info, Token>,
+pub system_program: Program<'info, System>
+```
+
+- @处理约束
+
+约束检查失败后，可使用@符号调用错误。
+
+@符号适用于mut, signer, has_one, address, owner, and constraint。
+
+```rust
+#[account(mut @ MyError::AccountNotMutable)]
+pub my_account: Account<'info, MyData>
+```
+
+- #[instruction(..)] 在约束中使用指令数据
+
+```rust
+#[derive(Accounts)]
+#[instruction(entered_bump: u8, restaurant: String)]
+pub struct InitializeReview<'info> {
+    #[account(
+        init, 
+        payer = payer, 
+        space = 100
+        seeds = [restaurant.as_bytes().as_ref(), signer.key().as_ref()], 
+        bump = entered_bump
+    )]
+    pub pda_data_account: Account<'info, RestaurantReview>,
+    #[account(mut)]
+    pub signer: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+```

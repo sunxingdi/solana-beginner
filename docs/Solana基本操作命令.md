@@ -1,6 +1,13 @@
 # Solana基本操作命令
 
 ---
+### Solana交互方式
+- 使用 Solana 的命令行界面 (Solana CLI)
+- 使用 Solana 的 JavaScript API（Solana-Web3.js）
+- 使用 cURL 命令行脚本
+- 使用 Rust Solana SDK
+
+---
 ### 设置网络
 
 Solana 的集群有本地集群（localhost）和公开集群。
@@ -93,9 +100,24 @@ G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e
 ```shell
 > solana balance
 0 SOL
+
+查询指定账户余额
+> solana balance YOUR_WALLET_ADDRESS -u mainnet-beta
+> solana balance YOUR_WALLET_ADDRESS -u devnet # for Devnet
+> solana balance YOUR_WALLET_ADDRESS -u testnet # for Testnet
+> solana balance YOUR_WALLET_ADDRESS -u solana_rpc_url
+
 ```
 
 申请空投。
+
+- 方法1：Solana CLI
+- 方法2：Solana faucet 或 QuickNode
+
+Solana faucet： https://faucet.solana.com/
+
+QuickNode faucet： https://www.quicknode.com/guides/solana-development/getting-started/a-complete-guide-to-airdropping-test-sol-on-solana
+
 ```shell
 > solana airdrop 1
 Requesting airdrop of 1 SOL
@@ -129,6 +151,71 @@ Signature: 21gZzWGaG6VuKVsL62LsNMAn6EUN1VtwGUh4eTsW5F9wZrrUi9UQr8XzVWmbfa5PEkEhP
 0.01 SOL
 ```
 
+查看账户租金
+```shell
+> solana rent 32
+
+Rent-exempt minimum: 0.0011136 SOL（帐户免租最低金额）
+```
+
+查看账户信息
+```shell
+> solana account G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e
+
+Public Key: G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e
+Balance: 14.55626192 SOL
+Owner: 11111111111111111111111111111111
+Executable: false
+Rent Epoch: 18446744073709551615
+```
+
+查看交易详情
+```shell
+> solana confirm -v gJ5LzT1yWMGHCUH9yU1bDxdoz3BCH4ZuCa92CDdx8LKLQPL5ewagXKuQxEwKR9H27Ff1JaUwXnjV3kvijEDCqjd
+
+RPC URL: https://api.devnet.solana.com
+Default Signer Path: /root/.config/solana/id.json
+Commitment: confirmed
+
+Transaction executed in slot 287235153:
+  Block Time: 2024-03-23T16:43:27+08:00
+  Version: legacy
+  Recent Blockhash: 4c57K3HMBket8ekDyjRWQkQnGaJyJ6PNEmg5haZiLTz6
+  Signature 0: gJ5LzT1yWMGHCUH9yU1bDxdoz3BCH4ZuCa92CDdx8LKLQPL5ewagXKuQxEwKR9H27Ff1JaUwXnjV3kvijEDCqjd
+  Signature 1: 3LYM3TTmcM62NMsNYqMfEEqUdWg1RdiKK468SRLKK5v2ikVaTLBU9vRS6Y2VMvF7c5sZ1AjfnXrRiQsSuQi751tV
+  Account 0: srw- G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e (fee payer)
+  Account 1: srw- 8BDmMfUgn5yucKmAK5NQo9V35YyV96RxFnBc6YsQ1yiS
+  Account 2: -r-x 11111111111111111111111111111111
+  Account 3: -r-x 4sSa86YU4F9VokkUpDToiRvW1VCw7qCgN8dQ6jWB6Ydf
+  Instruction 0
+    Program:   11111111111111111111111111111111 (2)
+    Account 0: G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e (0)
+    Account 1: 8BDmMfUgn5yucKmAK5NQo9V35YyV96RxFnBc6YsQ1yiS (1)
+    CreateAccount { lamports: 988320, space: 14, owner: 4sSa86YU4F9VokkUpDToiRvW1VCw7qCgN8dQ6jWB6Ydf }
+  Instruction 1
+    Program:   4sSa86YU4F9VokkUpDToiRvW1VCw7qCgN8dQ6jWB6Ydf (3)
+    Account 0: 8BDmMfUgn5yucKmAK5NQo9V35YyV96RxFnBc6YsQ1yiS (1)
+    Data: [0, 3, 0, 0, 0, 97, 98, 99]
+  Status: Ok
+    Fee: ◎0.00001
+    Account 0 balance: ◎54.5663986 -> ◎54.56540028
+    Account 1 balance: ◎0 -> ◎0.00098832
+    Account 2 balance: ◎0.000000001
+    Account 3 balance: ◎0.00139896
+  Compute Units Consumed: 1835
+  Log Messages:
+    Program 11111111111111111111111111111111 invoke [1]
+    Program 11111111111111111111111111111111 success
+    Program 4sSa86YU4F9VokkUpDToiRvW1VCw7qCgN8dQ6jWB6Ydf invoke [1]
+    Program log: Entrypoint
+    Program log: Beginning processing
+    Program log: Instruction unpacked
+    Program log: set note to  abc !
+    Program 4sSa86YU4F9VokkUpDToiRvW1VCw7qCgN8dQ6jWB6Ydf consumed 1685 of 399850 compute units
+    Program 4sSa86YU4F9VokkUpDToiRvW1VCw7qCgN8dQ6jWB6Ydf success
+
+Finalized
+```
 ---
 ### 创建代币账户
 
@@ -170,9 +257,14 @@ Signature: 3ti5niuoVB9ZPTh5ZCBywopeo4b67WisnMMgj59fnjEQDrMEcQYfU5pSSNYBHnjJvRrLe
 
 查询SPL-TOKEN余额
 ```shell
+通过SPL-TOKEN地址查询
 > spl-token balance FpbHQ2zoKvp59jLVdECVTMRM8eDsbUZttdiiinNQgn4C
 
 100
+
+通过ATA账户地址查询
+> spl-token balance --address Associated_Token_Address -u devnet
+> spl-token balance --address BYc1k1svFWBN6WYKhpx7X3Euif9xzMQrEsSxHdCVyUg1 -u devnet
 ```
 
 给其他账户发送SPL-TOKEN
@@ -186,6 +278,12 @@ Transfer 1 tokens
   Funding recipient: J4x5154eQcPTpj7zVCZgAS2Lap8Q2DUFyDd8bxWK8fPz
 
 Signature: 5XEHEN1BSJjbPbk1Hwk5pz42AnwWC48iDf98hkhCkP7B1oT7Je7x7eMzNgHV4WfWVhkuZubWfQ9wLSgEH4VSq2t3
+```
+
+查询钱包的ATA账户地址（Associated Token Address）
+```
+> spl-token address --owner G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e  --token FpbHQ2zoKvp59jLVdECVTMRM8eDsbUZttdiiinNQgn4C --verbose -udevnet
+
 ```
 
 查询其他账号的SPL-TOKEN余额

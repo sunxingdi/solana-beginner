@@ -42,6 +42,10 @@ Solana账户数据结构：
 |data|存储的数据|程序字节码|状态数据|
 |rent_epoch|租期|✔|✔|
 
+数据结构说明：
+- 免租：账户中存有2年租金可以免租。
+- Epoch：是Solana上的时间度量。
+
 关于账户所有者：
 - 只有账户所有者才能修改存储的数据，其他账户只能读数据。
 - 只有账户所有者才能提取lamports，其他账户只能存入lamports。
@@ -63,7 +67,37 @@ Solana账户数据结构：
 ||||
 
 ---
+### 系统程序账户（System Program Account）和代币程序账户（SPL Token Program Account）
+- 系统程序帐户：存储系统程序，用于管理所有用户钱包。
+- 代币程序账户，存储代币程序，用于铸造、销毁和转让 SPL 代币。
+
+![alt text](./image/系统程序账户和代币程序账户.png)
+
+---
+### 代币程序账户（Mint Account，SPL Token Account）
+
+（类似于以太坊的ERC20代币合约）
+
+Solana中，一个代币，仅仅是一个归Token合约管理的普通的Account对象。
+
+代币账户中，包含了代币的基本信息，如：supply总供应量、decimals代币精度。
+
+![alt text](./image/Mint%20Account.png)
+
+---
+### 用户代币账户（Associated Token Account, ATA）
+
+（把用户钱包账户和代币账户关联起来）
+
+用户代币账户存放了每个用户拥有的代币数量信息。
+
+![alt text](./image/SPL%20Token%20Account.png)
+
+---
 ### 程序派生账户（PDA）
+
+（解决数据账户私钥管理问题）
+
 在Solana账户模型中，程序和数据分别存储在不同的账户中，程序存储在程序账户，数据存储在数据账户。
 
 用户与程序交互时，需要传入数据账户，用于存储或者修改用户数据，并且每个程序都需要一个对应的数据账户。此时用户必须拥有数据账户的私钥，才能修改用户数据。
@@ -83,20 +117,26 @@ Solana账户数据结构：
 
 > 说明：当一个公钥位于椭圆曲线上时，则存在一个对应的私钥，可以使私钥加密算法生效。反之则不存在私钥。
 
----
-### 代币账户（Mint Account，SPL Token Account）
-Solana中，一个代币，仅仅是一个归Token合约管理的普通的Account对象。
-
-代币账户中，包含了代币的基本信息，如：supply总供应量、decimals代币精度。
-
-![alt text](./image/Mint%20Account.png)
+![alt text](./image/PDA账户原理ED2559椭圆曲线.png)
 
 ---
-### 用户代币账户（Associated Token Account, ATA）
+### 交易和指令（Transactions and Instructions）
 
-用户代币账户存放了每个用户拥有的代币数量信息。
+交易数据结构：
+- 指令（Instructions）：这是交易中最重要的部分，定义了交易要进行的操作。一个交易可以包含一个或多个指令。
+- 账户（Accounts）：每个指令都会涉及到一些账户，这些账户可能需要被读取或者写入。在Solana中，账户不仅仅是资金的存放地，也可以是存储数据的地方。
+- 最近的区块哈希（Recent Blockhash）：为了保证交易的唯一性和防止重放攻击，Solana的交易必须包含最近的区块哈希值。
+- 签名（Signatures）：交易由发起人签名，证明他们有权进行交易中描述的操作。如果交易影响到任何需要签名的账户，那么这些账户的所有者也必须签名。
 
-![alt text](./image/SPL%20Token%20Account.png)
+指令数据结构：
+- program_id: 指向负责处理该指令的程序的公钥地址。
+- accounts: 涉及的账户数组，这些账户可以被读取或写入，它们的信息被封装在 AccountMeta 结构中。
+- data: 包含与指令相关的具体数据，通常是一个字节数组，这个数据会被目标程序用来进行逻辑处理。
+
+指令是“程序中执行逻辑的最小连续单元”，指令的核心是告诉程序做某事。
+
+一条交易中可以包含多条指令，这样可以确保所有的指令一起成功或失败。
+
 ---
 ### 账户案例演示
 
@@ -115,9 +155,7 @@ https://explorer.solana.com/address/G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e
 https://solscan.io/account/G8L9EWdphFMdp6618tFfhuUfvP5x1BPZ25UW3wfwhi9e?cluster=testnet
 ![image](./../docs/image/区块浏览器2-钱包账户.png)
 
-### 程序账户 
-
-Program Account
+### 程序账户 Program Account
 
 以刚部署的程序为例进行演示：`ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S`
 
@@ -133,9 +171,7 @@ https://explorer.solana.com/address/ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S?
 https://solscan.io/account/ECToMXPsqKV9b6tYiFTwkZcX7y6dwuLXkPyGhbUwH8S?cluster=testnet
 ![image](./../docs/image/区块浏览器2-程序账户.png)
 
-### 程序可执行数据账户
-
-Program Executable Data Account
+### 程序可执行数据账户 Program Executable Data Account
 
 区块浏览器中显示了另一个账户：`HFkZ51imH5YFEYAoJs9efdD8AG8qsPHka4FSErBXg7Nm` ，叫程序可执行数据账户。
 
